@@ -340,7 +340,7 @@ class cerberus(app_manager.RyuApp):
         self.logger.info(f"Datapath: {dp_id} configured")
 
     def setup_sw_hosts(self, datapath: controller.Datapath):
-        """ Configures a datapath with all the flows requried for
+        """ Configures a datapath with all the flows required for
             host connectivity.
 
         Args:
@@ -440,7 +440,7 @@ class cerberus(app_manager.RyuApp):
 
     def add_group(self, datapath: controller.Datapath,
                   link: dict, group_id: int):
-        """ Helper fucntion to build and add groups to the datapath.
+        """ Helper function to build and add groups to the datapath.
 
         Args:
             datapath (controller.Datapath): The datapath to configure.
@@ -739,7 +739,7 @@ class cerberus(app_manager.RyuApp):
     def build_indirect_mac_flow_out(self, datapath: controller.Datapath, mac,
                                     vid, group_id):
         """ Builds the flow and instructions for mac flows of hosts
-            inderectly connected """
+            indirectly connected """
         ofproto: ofproto_v1_3 #type: ignore
         ofproto = datapath.ofproto
         ofproto_parser: ofproto_v1_3_parser #type: ignore
@@ -758,7 +758,7 @@ class cerberus(app_manager.RyuApp):
 
     def add_indirect_ipv4_flow(self, datapath, mac, ipv4_addr, vid, group_id,
                                priority=DEFAULT_PRIORITY, cookie=DEFAULT_COOKIE):
-        """ Add ipv4 rule for inderectly connected hosts """
+        """ Add ipv4 rule for indirectly connected hosts """
         match, instructions = self.build_indirect_ipv4_out(datapath, mac,
                                                            ipv4_addr, vid,
                                                            group_id)
@@ -787,7 +787,7 @@ class cerberus(app_manager.RyuApp):
     def add_indirect_ipv6_flow(self, datapath, mac, ipv6_addr, vid,
                                group_id, priority=DEFAULT_PRIORITY,
                                cookie=DEFAULT_COOKIE):
-        """ Add ipv6 rule for inderectly connected hosts """
+        """ Add ipv6 rule for indirectly connected hosts """
         match, instructions = self.build_indirect_ipv6_out(datapath, mac,
                                                            ipv6_addr, vid,
                                                            group_id)
@@ -818,7 +818,7 @@ class cerberus(app_manager.RyuApp):
         return match, instructions
 
 
-    def add_in_flow(self, port, datapath, mac=None, vid=None, tagged=False,
+    def add_in_flow(self, port, datapath, mac=None, vid=0, tagged=False,
                     priority=DEFAULT_PRIORITY, cookie=DEFAULT_COOKIE):
         """ Constructs flow for in table """
         ofproto_parser = datapath.ofproto_parser
@@ -886,7 +886,7 @@ class cerberus(app_manager.RyuApp):
     def setup_drop_rules(self, datapath: controller.Datapath,
                          cookie: int = DEFAULT_COOKIE):
         """ Sets up the drop rules for the datapath. This is set up \
-            individuallyfor both the IN_TABLE and the OUT_TABLE for greater \
+            individually for both the IN_TABLE and the OUT_TABLE for greater \
             clarity as to when a packet is dropped
 
         Args:
@@ -1021,7 +1021,7 @@ class cerberus(app_manager.RyuApp):
             self.logger.error(f"File not found: {config_file}\n")
             if config_file is DEFAULT_CONFIG:
                 self.logger.error(f"Please specify a topology in "
-                                  f"{DEFAULT_CONFIG} or specify a configto use"
+                                  f"{DEFAULT_CONFIG} or specify a config to use"
                                   " with the --config option")
             sys.exit()
         return data
@@ -1080,7 +1080,7 @@ class cerberus(app_manager.RyuApp):
             self.copy_config_file_to_running(config_file, rollback_dir)
         except Exception as err:
             self.logger.error("Error storing rollback")
-            self.logger.error(f"confname: {config_file}\nStoring location: "
+            self.logger.error(f"conf_name: {config_file}\nStoring location: "
                               f"{rollback_fname}")
             self.logger.error(err)
 
@@ -1136,8 +1136,8 @@ class cerberus(app_manager.RyuApp):
 
     def mv_failed_conf_to_failed_dir(self, config: dict, failed_conf_dir: str):
         try:
-            formated_date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
-            filename = f"{formated_date}.failed_config"
+            formatted_date = datetime.now().strftime('%Y-%m-%dT%H:%M:%S')
+            filename = f"{formatted_date}.failed_config"
             filepath = f"{failed_conf_dir}/{filename}"
             with open(filepath, 'w+') as file:
                 json.dump(config, file, indent=2)
@@ -1376,7 +1376,7 @@ class cerberus(app_manager.RyuApp):
 
 
     def check_core_port_flow(self, core_port, ofproto_parser, flows):
-        """ Checks if the core port has been configured to recieve packets """
+        """ Checks if the core port has been configured to receive packets """
         flow_exists = False
         match = ofproto_parser.OFPMatch(in_port=core_port)
         match_str = match.__str__()
@@ -1620,7 +1620,7 @@ class cerberus(app_manager.RyuApp):
 
 
     def associate_dp_id_to_swname(self, switches):
-        """ Sets up dictionary to simplify retreiving a switch name when only
+        """ Sets up dictionary to simplify retrieving a switch name when only
             having a dpid """
 
         dp_id_to_swname = {}
@@ -1677,7 +1677,7 @@ class cerberus(app_manager.RyuApp):
             msg['msg'] = "The `enable` variable must be set to either true or false"
             return msg
         enabled = 'enabled' if req_dict['enable'] else 'disabled'
-        self.logger.info(f"Debbuging packet flows have been {enabled} via "
+        self.logger.info(f"Debugging packet flows have been {enabled} via "
                          f"the API calls")
         self.debug_dropped_packets = req_dict['enable']
         return msg
@@ -1708,7 +1708,7 @@ class cerberus(app_manager.RyuApp):
 
         return msg
 
-    # TODO: Change to accept parameters and rollback to specific verison
+    # TODO: Change to accept parameters and rollback to specific version
     def api_rollback_to_last_config(self):
         """ Helper function for the API to rollback the running configuration to
             the last known running config.

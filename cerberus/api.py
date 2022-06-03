@@ -1,6 +1,6 @@
 import traceback
 
-from simplejson import JSONDecodeError
+from json import JSONDecodeError
 
 from cerberus.exceptions import *
 from ryu.app.wsgi import ControllerBase, route
@@ -41,7 +41,7 @@ class api(ControllerBase):
             req (Request): Empty GET request object
 
         Returns:
-            Response: JSON object cotaining switch objects
+            Response: JSON object containing switch objects
         """
         self.app.logger.info(f"Request for switches was called by:\t{req.host}")
         return Response(content_type='application/json',
@@ -62,7 +62,7 @@ class api(ControllerBase):
         try:
             if not req.body:
                 err_msg = ("The request body was empty. Ensure that the new "
-                           "configuration is attached to your PUT reequst. "
+                           "configuration is attached to your PUT Request. "
                            "There was no configuration pushed to the network.")
                 raise EmptyConfigError(err_msg)
             return Response(content_type='application/json',
