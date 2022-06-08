@@ -57,22 +57,19 @@ def parse_args(sys_args):
         '--ofp-listen-host',
         dest='ofp_host',
         action='store',
-        help="OpenFlow listen host (default 0.0.0.0)",
-        default='0.0.0.0'
+        help="OpenFlow listen host (default 0.0.0.0)"
     )
     ryu_args.add_argument(
         '--ofp-ssl-listen-port',
         dest='ofp_ssl_port',
         action='store',
-        help="OpenFlow SSL listen port (default 6653)",
-        default=6653
+        help="OpenFlow SSL listen port (default 6653)"
     )
     ryu_args.add_argument(
         '--ofp-tcp-listen-port',
         dest='ofp_tcp_port',
         action='store',
-        help="OpenFlow listen port (default 6653)",
-        default=6653
+        help="OpenFlow tcp listen port (default 6653)"
     )
     return args.parse_args(sys_args)
 
